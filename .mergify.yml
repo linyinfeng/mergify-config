@@ -1,25 +1,39 @@
-# Temporary live experiment; only the experiment target branch can enter this queue.
+# yaml-language-server: $schema=https://docs.mergify.com/mergify-configuration-schema.json
+# Consumers in this GitHub account use: extends: mergify-config
 merge_queue:
   max_parallel_checks: 1
+
 queue_rules:
-  - name: experiment
+  - name: default
     merge_method: fast-forward
     update_method: rebase
     batch_size: 1
+    # Keep CI here, without separate merge_conditions, for in-place checks.
+    # These conditions are checked again after the queue rebases the PR.
     queue_conditions:
-      - base = codex/queue-observation-base
       - -draft
-    merge_conditions:
-      - check-success = experiment/release
+      # Summary is informational success, not evidence that CI passed.
+      # Keep it in the pending/failure checks: it does not wait for the merge.
+      # The queue and its action report pending while waiting for the merge.
+      # Configuration validation and unrelated rule checks still participate.
+      # Matching is by check name; reserve these names for Mergify.
+      - 'check-success ~= ^(?!(?:Mergify Merge Queue|Summary|Rule: Queue automatic updates \(queue\))$).+'
+      - '-check-pending ~= ^(?!(?:Mergify Merge Queue|Rule: Queue automatic updates \(queue\))$).+'
+      # check-failure also covers cancelled, timed-out and action-required runs.
+      - '-check-failure ~= ^(?!(?:Mergify Merge Queue|Rule: Queue automatic updates \(queue\))$).+'
+
 pull_request_rules:
   - name: Queue automatic updates
     conditions:
-      - base = codex/queue-observation-base
-      - label = auto update
       - -draft
+      - or:
+          - label = auto update
+          - author = dependabot[bot]
     actions:
       queue:
-        name: experiment
+        name: default
+
+# Other PRs can be queued with the checkbox or @mergifyio queue.
 commands_restrictions:
   queue:
     conditions:
