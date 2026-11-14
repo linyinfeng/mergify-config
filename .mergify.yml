@@ -25,7 +25,6 @@ queue_rules:
 
 pull_request_rules:
   - name: Queue automatic updates
-    description: Live experiment of automatic queue check lifecycle.
     conditions:
       - -draft
       - or:
@@ -40,5 +39,3 @@ commands_restrictions:
   queue:
     conditions:
       - sender-permission >= write
-
-# Live observation: request configuration diagnostics without changing behavior.
