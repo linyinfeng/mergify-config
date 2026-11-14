@@ -10,7 +10,7 @@ queue_rules:
     # Accept the queue request before CI completes.
     queue_conditions:
       - -draft
-    # Evaluate CI on the queue's temporary PR before fast-forwarding the base.
+    # Evaluate CI on the queue's temporary PR before landing the queued PR.
     merge_conditions:
       - "#check-success >= 1"
       - "#check-pending = 0"
