@@ -13,7 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
-      - run: echo "This check intentionally does no useful work."
+      - run: |
+          echo "This check intentionally does no useful work."
+          sleep 5
 
   slow:
     name: observation-slow
