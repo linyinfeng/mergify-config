@@ -4,39 +4,22 @@ merge_queue:
   max_parallel_checks: 1
 
 queue_rules:
-  - name: diagnostic-merge
-    merge_method: merge
-    batch_size: 1
-    queue_conditions:
-      - -draft
-      - base ~= ^codex/merge-diagnosis
-    merge_conditions: &diagnostic_ci
-      - "#check-success >= 1"
-      - "#check-pending = 0"
-      - "#check-failure = 0"
   - name: default
-    merge_method: fast-forward
+    merge_method: merge
     batch_size: 1
     # Accept the queue request before CI completes.
     queue_conditions:
       - -draft
-      - -base ~= ^codex/merge-diagnosis
-    # Evaluate CI on the queue's temporary PR before fast-forwarding the base.
-    merge_conditions: *diagnostic_ci
+    # Evaluate CI on the queue's temporary PR before merging the original PR.
+    merge_conditions:
+      - "#check-success >= 1"
+      - "#check-pending = 0"
+      # check-failure also covers cancelled, timed-out and action-required runs.
+      - "#check-failure = 0"
 
 pull_request_rules:
-  - name: Queue diagnostic merge updates
-    conditions:
-      - base ~= ^codex/merge-diagnosis
-      - or:
-          - label = auto update
-          - author = dependabot[bot]
-    actions:
-      queue:
-        name: diagnostic-merge
   - name: Queue automatic updates
     conditions:
-      - -base ~= ^codex/merge-diagnosis
       - or:
           - label = auto update
           - author = dependabot[bot]
