@@ -1,0 +1,1 @@
+Intentional failure for the negative test
