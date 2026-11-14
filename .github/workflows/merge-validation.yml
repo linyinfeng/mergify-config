@@ -1,0 +1,21 @@
+name: Merge validation
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  quick:
+    name: validation-quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: sleep 5
+  slow:
+    name: validation-slow
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sleep 10
+          test ! -f validation-fail.txt
