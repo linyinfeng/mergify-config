@@ -1,0 +1,26 @@
+name: CI attribution probe
+on:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  quick:
+    name: validation-quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - run: sleep 5
+  slow:
+    name: validation-slow
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sleep 10
+          echo "Head branch: $GITHUB_HEAD_REF"
+          git rev-parse HEAD
+          case "$GITHUB_HEAD_REF" in
+            mergify/merge-queue/*) test ! -f validation-queue-only-fail.txt ;;
+            *) test ! -f validation-original-only-fail.txt ;;
+          esac
