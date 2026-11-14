@@ -6,7 +6,6 @@ merge_queue:
 queue_rules:
   - name: default
     merge_method: fast-forward
-    update_method: rebase
     batch_size: 1
     # Accept the queue request before CI completes.
     queue_conditions:
