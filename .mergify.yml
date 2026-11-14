@@ -27,7 +27,6 @@ queue_rules:
 pull_request_rules:
   - name: Queue automatic updates
     conditions:
-      - -draft
       - or:
           - label = auto update
           - author = dependabot[bot]
