@@ -18,10 +18,10 @@ queue_rules:
       # Queue action checks can stay pending or cancelled as the queue changes.
       # Configuration validation and unrelated rule checks still participate.
       # Matching is by check name; reserve these names for Mergify.
-      - 'check-success ~= ^(?!(?:Mergify Merge Queue|Summary|Rule: .+ \(queue\))$).+'
-      - '-check-pending ~= ^(?!(?:Mergify Merge Queue|Rule: .+ \(queue\))$).+'
+      - 'check-success ~= ^(?!(?:Mergify Merge Queue|Summary|Rule: [\w\s]+ \(queue\))$).+'
+      - '-check-pending ~= ^(?!(?:Mergify Merge Queue|Rule: [\w\s]+ \(queue\))$).+'
       # check-failure also covers cancelled, timed-out and action-required runs.
-      - '-check-failure ~= ^(?!(?:Mergify Merge Queue|Rule: .+ \(queue\))$).+'
+      - '-check-failure ~= ^(?!(?:Mergify Merge Queue|Rule: [\w\s]+ \(queue\))$).+'
 
 pull_request_rules:
   - name: Queue automatic updates
