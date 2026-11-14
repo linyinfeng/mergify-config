@@ -1,0 +1,1 @@
+Trigger a fresh synchronize event after Mergify product activation.

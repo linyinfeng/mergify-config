@@ -1,0 +1,27 @@
+name: Queue observation
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quick:
+    name: observation-quick
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - run: echo "This check intentionally does no useful work."
+
+  slow:
+    name: observation-slow
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Leave time to observe pending checks
+        run: |
+          echo "Waiting so the Mergify check lifecycle can be observed."
+          sleep 10
+          echo "Observation window finished."
