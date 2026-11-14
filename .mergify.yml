@@ -5,12 +5,12 @@ merge_queue:
 
 queue_rules:
   - name: default
-    merge_method: fast-forward
+    merge_method: merge
     batch_size: 1
     # Accept the queue request before CI completes.
     queue_conditions:
       - -draft
-    # Evaluate CI on the queue's temporary PR before fast-forwarding the base.
+    # Evaluate CI on the queue's temporary PR before merging the original PR.
     merge_conditions:
       - "#check-success >= 1"
       - "#check-pending = 0"
