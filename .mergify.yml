@@ -39,3 +39,5 @@ commands_restrictions:
   queue:
     conditions:
       - sender-permission >= write
+
+# Live observation: request configuration diagnostics without changing behavior.
