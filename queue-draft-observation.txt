@@ -1,0 +1,1 @@
+A draft PR with auto update must not enter the merge queue.
