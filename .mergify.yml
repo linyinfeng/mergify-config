@@ -8,10 +8,11 @@ queue_rules:
     merge_method: fast-forward
     update_method: rebase
     batch_size: 1
-    # Keep CI here, without separate merge_conditions, for in-place checks.
-    # These conditions are checked again after the queue rebases the PR.
+    # Accept the queue request before CI completes.
     queue_conditions:
       - -draft
+    # Evaluate CI on the queue's temporary PR before fast-forwarding the base.
+    merge_conditions:
       # Summary is informational success, not evidence that CI passed.
       # Keep it in the pending/failure checks: it does not wait for the merge.
       # Ignore queue lifecycle checks, including every Rule: ... (queue) check.
