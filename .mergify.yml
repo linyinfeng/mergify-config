@@ -14,14 +14,14 @@ queue_rules:
       - -draft
       # Summary is informational success, not evidence that CI passed.
       # Keep it in the pending/failure checks: it does not wait for the merge.
-      # Live experiment: include the queue action's own check in CI conditions.
-      # Only the queue's aggregate lifecycle check is exempted from blocking.
+      # Ignore queue lifecycle checks, including every Rule: ... (queue) check.
+      # Queue action checks can stay pending or cancelled as the queue changes.
       # Configuration validation and unrelated rule checks still participate.
       # Matching is by check name; reserve these names for Mergify.
-      - 'check-success ~= ^(?!(?:Mergify Merge Queue|Summary)$).+'
-      - '-check-pending ~= ^(?!Mergify Merge Queue$).+'
+      - 'check-success ~= ^(?!(?:Mergify Merge Queue|Summary|Rule: .+ \(queue\))$).+'
+      - '-check-pending ~= ^(?!(?:Mergify Merge Queue|Rule: .+ \(queue\))$).+'
       # check-failure also covers cancelled, timed-out and action-required runs.
-      - '-check-failure ~= ^(?!Mergify Merge Queue$).+'
+      - '-check-failure ~= ^(?!(?:Mergify Merge Queue|Rule: .+ \(queue\))$).+'
 
 pull_request_rules:
   - name: Queue automatic updates
