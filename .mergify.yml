@@ -1,0 +1,26 @@
+# Temporary live experiment; only the experiment target branch can enter this queue.
+merge_queue:
+  max_parallel_checks: 1
+queue_rules:
+  - name: experiment
+    merge_method: fast-forward
+    update_method: rebase
+    batch_size: 1
+    queue_conditions:
+      - base = codex/queue-observation-base
+      - -draft
+    merge_conditions:
+      - check-success = experiment/release
+pull_request_rules:
+  - name: Queue automatic updates
+    conditions:
+      - base = codex/queue-observation-base
+      - label = auto update
+      - -draft
+    actions:
+      queue:
+        name: experiment
+commands_restrictions:
+  queue:
+    conditions:
+      - sender-permission >= write
